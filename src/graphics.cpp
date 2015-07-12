@@ -17,6 +17,9 @@ extern "C" {
 #define FRAMEBUFFER_SIZE (PSP_LINE_SIZE*SCREEN_HEIGHT*4)
 #define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
 
+#define png_infopp_NULL (png_infopp)NULL
+#define int_p_NULL (int*)NULL
+
 typedef struct
 {
 	unsigned short u, v;
@@ -84,14 +87,14 @@ Image* loadPngImageImpl(png_structp png_ptr)
 	png_infop info_ptr;
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL) {
-		png_destroy_read_struct(&png_ptr,(png_infopp)NULL, (png_infopp)NULL);
+		png_destroy_read_struct(&png_ptr, png_infopp_NULL, png_infopp_NULL);
 		return NULL;
 	}
 	png_set_sig_bytes(png_ptr, sig_read);
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, int_p_NULL, int_p_NULL);
 	if (width > 512 || height > 512) {
-		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		png_destroy_read_struct(&png_ptr, png_infopp_NULL, png_infopp_NULL);
 		return NULL;
 	}
 	Image* image = (Image*) malloc(sizeof(Image));
@@ -108,14 +111,14 @@ Image* loadPngImageImpl(png_structp png_ptr)
 	image->data = (Color*) memalign(16, image->textureWidth * image->textureHeight * sizeof(Color));
 	if (!image->data) {
 		free(image);
-		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		png_destroy_read_struct(&png_ptr, png_infopp_NULL, png_infopp_NULL);
 		return NULL;
 	}
 	line = (u32*) malloc(width * 4);
 	if (!line) {
 		free(image->data);
 		free(image);
-		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		png_destroy_read_struct(&png_ptr, png_infopp_NULL, png_infopp_NULL);
 		return NULL;
 	}
 	for (y = 0; y < height; y++) {
@@ -127,7 +130,7 @@ Image* loadPngImageImpl(png_structp png_ptr)
 	}
 	free(line);
 	png_read_end(png_ptr, info_ptr);
-	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+	png_destroy_read_struct(&png_ptr, &info_ptr, png_infopp_NULL);
 	return image;
 }
 
