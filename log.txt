@@ -1,0 +1,6 @@
+psp-g++ -I. -IC:/pspsdk/psp/sdk/include -G0 -Wall -O0 -fno-strict-aliasing -mno-explicit-relocs  -IC:/pspsdk/psp/include/freetype2  -I. -IC:/pspsdk/psp/sdk/include -G0 -Wall -O0 -fno-strict-aliasing -mno-explicit-relocs  -IC:/pspsdk/psp/include/freetype2  -fno-exceptions -fno-rtti -D_PSP_FW_VERSION=150   -c -o src/graphics.o src/graphics.cpp
+src/graphics.cpp: In function 'Image* loadPngImageImpl(png_struct*)':
+src/graphics.cpp:92: error: 'int_p_NULL' was not declared in this scope
+src/graphics.cpp:105: error: 'png_set_gray_1_2_4_to_8' was not declared in this scope
+src/graphics.cpp:122: error: 'png_bytep_NULL' was not declared in this scope
+make: *** [src/graphics.o] Error 1
